@@ -5,8 +5,9 @@ def create_movie(movie_title, genre, rating):
                 "rating": rating         
                 }
     for value in new_movie.values(): 
-        # if genre is None: 
-        #     import pdb; pdb.set_trace()
+        # you generally want to delete things like this before publishing code
+        # unless you want to call it out in the PR or something. same goes for
+        # debugging print() statements
         if value == None:
             new_movie = None
         
@@ -50,13 +51,20 @@ def get_most_watched_genre(user_data):
         for movie in user_data["watched"]: 
             if movie["genre"] not in watched_genre_counts: 
                 watched_genre_counts[movie["genre"]] = 1 
-            elif movie["genre"] in watched_genre_counts:
+            else:
+                # when there's only two options, if/else is preferred to if/elif
                 watched_genre_counts[movie["genre"]] += 1
     else:
         popular_genre = None
 
     for genre, count in watched_genre_counts.items(): 
-        if count == max(watched_genre_counts.values()):
+        # any time you're doing something like max() you'll want to set
+        # max_something = max(things) and then check against max_something
+        # because otherwise this searches watched_genre_counts every time.
+
+        # max() is a sneaky linear-time function.
+        max_count = max(watched_genre_counts.values())
+        if count == max_count:
             popular_genre = genre 
     
     return popular_genre
