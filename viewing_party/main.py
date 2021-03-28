@@ -1,3 +1,4 @@
+# wave_01 
 def create_movie(movie_title, genre, rating): 
     new_movie = {
                 "title": movie_title,
@@ -5,8 +6,6 @@ def create_movie(movie_title, genre, rating):
                 "rating": rating         
                 }
     for value in new_movie.values(): 
-        # if genre is None: 
-        #     import pdb; pdb.set_trace()
         if value == None:
             new_movie = None
         
@@ -28,6 +27,7 @@ def watch_movie(user_data, title):
     
     return user_data
 
+# wave_02 
 def get_watched_avg_rating(user_data): 
     total_rating = 0.0
     average_rating = 0.0
@@ -46,29 +46,28 @@ def get_watched_avg_rating(user_data):
 
 def get_most_watched_genre(user_data): 
     watched_genre_counts ={} 
-    if len(user_data["watched"]) > 0:
-        for movie in user_data["watched"]: 
-            if movie["genre"] not in watched_genre_counts: 
-                watched_genre_counts[movie["genre"]] = 1 
-            elif movie["genre"] in watched_genre_counts:
-                watched_genre_counts[movie["genre"]] += 1
-    else:
-        popular_genre = None
+    popular_genre = None
+
+    for movie in user_data["watched"]: 
+        if movie["genre"] not in watched_genre_counts: 
+            watched_genre_counts[movie["genre"]] = 1 
+        else: 
+            watched_genre_counts[movie["genre"]] += 1
 
     for genre, count in watched_genre_counts.items(): 
-        if count == max(watched_genre_counts.values()):
+        max_genre_count = max(watched_genre_counts.values())
+        if count == max_genre_count:
             popular_genre = genre 
     
     return popular_genre
 
-# get user watched movies
+# wave_03
 def get_user_most_watched(user_data): 
     user_watched = []
     for movie in user_data["watched"]:
         user_watched.append(movie)
     return user_watched
 
-# get friends watched movies 
 def get_friends_most_watched(user_data): 
     friends_watched =[]
     for friend in user_data["friends"]: 
@@ -77,7 +76,7 @@ def get_friends_most_watched(user_data):
     
     return friends_watched
 
-# calls get user watched movies and get friends watched movie, and return
+# a function call that gets user watched movies and gets friends watched movie, and return
 # the movies that are watched by user but not their friends 
 def get_unique_watched(user_data): 
     user_watched = get_user_most_watched(user_data)  
@@ -88,7 +87,9 @@ def get_unique_watched(user_data):
         if movie not in friends_watched and movie not in unique_user_watched:
             unique_user_watched.append(movie)
     return unique_user_watched
-    
+
+# a function call that gets user watched movies and gets friends watched movie, and return
+# the movies that are watched by friends but not the user    
 def get_friends_unique_watched(user_data): 
     user_watched = get_user_most_watched(user_data)  
     friends_watched = get_friends_most_watched(user_data)
@@ -99,6 +100,7 @@ def get_friends_unique_watched(user_data):
             unique_friends_watched.append(movie)
     return unique_friends_watched
 
+# wave_04
 def get_available_recs(user_data): 
     unique_friends_watched = get_friends_unique_watched(user_data)
     movie_recs = []
@@ -109,6 +111,7 @@ def get_available_recs(user_data):
     
     return movie_recs
 
+# wave_05
 def get_new_rec_by_genre(user_data):
     unique_friends_watched = get_friends_unique_watched(user_data)
     most_watched_genre = get_most_watched_genre(user_data)
